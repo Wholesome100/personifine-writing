@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <h2> I am some content for this website.</h2>
+      <p> I am some content for this website.</p>
       <Footer />
     </>
   );
