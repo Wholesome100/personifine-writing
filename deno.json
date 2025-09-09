@@ -13,12 +13,6 @@
     "strict": true,
     "jsx": "preserve"
   },
-  "importMap": "import_map.json",
-  "lint": {
-    "rules": {
-      "exclude": ["no-sloppy-imports"]
-    }
-  },
   "tasks": {
     "dev": "deno run -A --unstable-detect-cjs npm:next@latest dev --turbopack",
     "build": "deno run -A --unstable-detect-cjs npm:next@latest build --turbopack",
