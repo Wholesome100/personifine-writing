@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
-import { Merriweather, Merriweather_Sans} from "next/font/google";
+import { Merriweather, Merriweather_Sans } from "next/font/google";
 import "./globals.css";
 
 const merriweather = Merriweather({
