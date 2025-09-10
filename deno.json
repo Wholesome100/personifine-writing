@@ -15,7 +15,7 @@
   },
   "fmt": {
     "exclude": [
-      "src/app/globals.tailwind.css"
+      "src/app/globals.css"
     ]
   },
   "tasks": {

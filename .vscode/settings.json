@@ -1,4 +1,7 @@
 {
   "deno.enable": true,
-  "deno.disablePaths": ["src"]
+  "deno.disablePaths": ["src"],
+  "files.associations": {
+    "*.css": "tailwindcss"
+  }
 }
