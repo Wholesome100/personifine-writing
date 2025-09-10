@@ -1,7 +1,10 @@
 export default function Footer() {
   return (
     <footer>
-      <h1>I am the footer for the website.</h1>
+      <div>
+        <h1>Personifine Writing</h1>
+        <h2>Copyright 2025, All Rights Reserved</h2>
+      </div>
     </footer>
   );
 }

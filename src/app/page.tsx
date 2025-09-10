@@ -10,13 +10,23 @@ async function getFeatured() {
 }
 
 export default async function Home() {
-  console.log(await getFeatured());
+  //console.log(await getFeatured());
 
   return (
     <>
       <Header />
-
-      <p>I am some content for this website.</p>
+      <main>
+        {
+          // I want a text logo for the site here
+        }
+        <p>I am some content for this website.</p>
+        {
+          // A featured stories section will go down here
+        }
+        {
+          // A call for people to apply to be authors will go here
+        }
+      </main>
       <Footer />
     </>
   );
