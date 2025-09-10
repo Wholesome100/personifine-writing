@@ -3,13 +3,16 @@
   "specifiers": {
     "npm:@neondatabase/serverless@^1.0.1": "1.0.1",
     "npm:@tailwindcss/postcss@4": "4.1.13",
+    "npm:@types/bcrypt@6": "6.0.0",
     "npm:@types/node@20": "20.19.13",
     "npm:@types/react-dom@19": "19.1.9_@types+react@19.1.12",
     "npm:@types/react@19": "19.1.12",
     "npm:@vercel/analytics@^1.5.0": "1.5.0_next@15.5.2__react@19.1.0__react-dom@19.1.0___react@19.1.0_react@19.1.0_react-dom@19.1.0__react@19.1.0",
     "npm:@vercel/speed-insights@^1.2.0": "1.2.0_next@15.5.2__react@19.1.0__react-dom@19.1.0___react@19.1.0_react@19.1.0_react-dom@19.1.0__react@19.1.0",
+    "npm:bcrypt@6": "6.0.0",
     "npm:next@15.5.2": "15.5.2_react@19.1.0_react-dom@19.1.0__react@19.1.0",
     "npm:next@latest": "15.5.2_react@19.1.0_react-dom@19.1.0__react@19.1.0",
+    "npm:node-gyp-build@4.8.4": "4.8.4",
     "npm:react-dom@19.1.0": "19.1.0_react@19.1.0",
     "npm:react@19.1.0": "19.1.0",
     "npm:tailwindcss@4": "4.1.13",
@@ -391,6 +394,12 @@
         "tslib"
       ]
     },
+    "@types/bcrypt@6.0.0": {
+      "integrity": "sha512-/oJGukuH3D2+D+3H4JWLaAsJ/ji86dhRidzZ/Od7H/i8g+aCmvkeCc6Ni/f9uxGLSQVCRZkX2/lqEFG2BvWtlQ==",
+      "dependencies": [
+        "@types/node@24.2.0"
+      ]
+    },
     "@types/node@20.19.13": {
       "integrity": "sha512-yCAeZl7a0DxgNVteXFHt9+uyFbqXGy/ShC4BlcHkoE0AfGXYv/BUiplV72DjMYXHDBXFjhvr6DD1NiRVfB4j8g==",
       "dependencies": [
@@ -449,6 +458,14 @@
       "optionalPeers": [
         "next",
         "react"
+      ],
+      "scripts": true
+    },
+    "bcrypt@6.0.0": {
+      "integrity": "sha512-cU8v/EGSrnH+HnxV2z0J7/blxH8gq7Xh2JFT6Aroax7UohdmiJJlxApMxtKfuI7z68NvvVcmR78k2LbT6efhRg==",
+      "dependencies": [
+        "node-addon-api",
+        "node-gyp-build"
       ],
       "scripts": true
     },
@@ -622,6 +639,13 @@
       ],
       "bin": true
     },
+    "node-addon-api@8.5.0": {
+      "integrity": "sha512-/bRZty2mXUIFY/xU5HLvveNHlswNJej+RnxBjOMkidWfwZzgTbPG1E3K5TOxRLOR+5hX7bSofy8yf1hZevMS8A=="
+    },
+    "node-gyp-build@4.8.4": {
+      "integrity": "sha512-LA4ZjwlnUblHVgq0oBF3Jl/6h/Nvs5fzBLwdEF4nuxnFdsfajde4WfxtJr3CaiH+F6ewcIB/q4jQ4UzPyid+CQ==",
+      "bin": true
+    },
     "pg-int8@1.0.1": {
       "integrity": "sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw=="
     },
@@ -780,11 +804,13 @@
       "dependencies": [
         "npm:@neondatabase/serverless@^1.0.1",
         "npm:@tailwindcss/postcss@4",
+        "npm:@types/bcrypt@6",
         "npm:@types/node@20",
         "npm:@types/react-dom@19",
         "npm:@types/react@19",
         "npm:@vercel/analytics@^1.5.0",
         "npm:@vercel/speed-insights@^1.2.0",
+        "npm:bcrypt@6",
         "npm:next@15.5.2",
         "npm:react-dom@19.1.0",
         "npm:react@19.1.0",

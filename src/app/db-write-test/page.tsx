@@ -1,11 +1,11 @@
-import { neon } from '@neondatabase/serverless';
+import { sql } from "@/db/context";
+
 export default async function Page() {
   async function create(formData: FormData) {
     "use server";
-    const sql = neon(process.env.DATABASE_URL!);
     await sql`CREATE TABLE IF NOT EXISTS comments (comment TEXT)`;
     const comment = formData.get("comment");
-     await sql`INSERT INTO comments (comment) VALUES (${comment})`;
+    await sql.query("INSERT INTO comments (comment) VALUES ($1)", [comment]);
   }
   return (
     <form action={create}>
