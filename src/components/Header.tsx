@@ -15,9 +15,18 @@ export default function Header() {
         {/* Desktop Nav */}
         <nav className="hidden md:flex space-x-6">
           <Link href="/" className="hover:text-accent2 transition-colors">
+            Home
+          </Link>
+          <Link
+            href="/catalog"
+            className="hover:text-accent2 transition-colors"
+          >
             Catalog
           </Link>
-          <Link href="/apply" className="hover:text-accent2 transition-colors">
+          <Link
+            href="/authorship"
+            className="hover:text-accent2 transition-colors"
+          >
             Authorship
           </Link>
           <Link href="/about" className="hover:text-accent2 transition-colors">
@@ -46,10 +55,17 @@ export default function Header() {
             className="block hover:text-accent2 transition-colors"
             onClick={() => setMenuOpen(false)}
           >
+            Home
+          </Link>
+          <Link
+            href="/catalog"
+            className="block hover:text-accent2 transition-colors"
+            onClick={() => setMenuOpen(false)}
+          >
             Catalog
           </Link>
           <Link
-            href="/apply"
+            href="/authorship"
             className="block hover:text-accent2 transition-colors"
             onClick={() => setMenuOpen(false)}
           >
