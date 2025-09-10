@@ -15,7 +15,7 @@ export default async function Home() {
   return (
     <>
       <Header />
-      <main>
+      <main className="bg-page-bg">
         {
           // I want a text logo for the site here
         }
