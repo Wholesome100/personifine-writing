@@ -27,6 +27,7 @@ export default function Header() {
 
         {/* Mobile Hamburger */}
         <button
+          type="button"
           className="md:hidden flex flex-col space-y-1"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"

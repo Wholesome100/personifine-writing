@@ -23,29 +23,29 @@
 /* Alter palette variables if the user wants dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
-  --page-bg: #121212; /* Almost Black */
-  --page-text: #e6e1dc; /* Bone */
-  --page-text-muted: #a8a29e; /* Silver Chalice */
-  --accent1: #c89f85; /* Sand */
-  --accent2: #b5c99a; /* Light Sage */
-  --accent3: #e6b17e; /* Warm Amber */
+    --page-bg: #121212; /* Almost Black */
+    --page-text: #e6e1dc; /* Bone */
+    --page-text-muted: #a8a29e; /* Silver Chalice */
+    --accent1: #c89f85; /* Sand */
+    --accent2: #b5c99a; /* Light Sage */
+    --accent3: #e6b17e; /* Warm Amber */
 
-  /* Dark mode hover/focus (lighten) */
-  --accent1-hover: color-mix(in srgb, var(--accent1) 90%, white);
-  --accent1-focus: color-mix(in srgb, var(--accent1) 80%, white);
+    /* Dark mode hover/focus (lighten) */
+    --accent1-hover: color-mix(in srgb, var(--accent1) 90%, white);
+    --accent1-focus: color-mix(in srgb, var(--accent1) 80%, white);
 
-  --accent2-hover: color-mix(in srgb, var(--accent2) 90%, white);
-  --accent2-focus: color-mix(in srgb, var(--accent2) 80%, white);
+    --accent2-hover: color-mix(in srgb, var(--accent2) 90%, white);
+    --accent2-focus: color-mix(in srgb, var(--accent2) 80%, white);
 
-  --accent3-hover: color-mix(in srgb, var(--accent3) 90%, white);
-  --accent3-focus: color-mix(in srgb, var(--accent3) 80%, white);
-}
+    --accent3-hover: color-mix(in srgb, var(--accent3) 90%, white);
+    --accent3-focus: color-mix(in srgb, var(--accent3) 80%, white);
+  }
 }
 
 /* Set inline theme for runtime color resolution */
 @theme inline {
   --color-*: initial;
-  
+
   --color-page-bg: var(--page-bg);
   --color-page-text: var(--page-text);
   --color-page-text-muted: var(--page-text-muted);
@@ -62,7 +62,6 @@
   --color-accent3-hover: var(--accent3-hover);
   --color-accent3-focus: var(--accent3-focus);
 }
-
 
 /* inline required for proper build/runtime font resolution */
 @theme inline {

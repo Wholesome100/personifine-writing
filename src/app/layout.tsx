@@ -3,7 +3,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { Merriweather, Merriweather_Sans } from "next/font/google";
-import "./globals.css";
+import "./globals.tailwind.css";
 
 const merriweather = Merriweather({
   variable: "--font-merriweather",

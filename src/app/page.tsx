@@ -25,7 +25,7 @@ export default async function Home() {
               Personifine
             </h1>
             <p className="mt-2 text-page-text-muted max-w-prose">
-              Bringing stories to life!
+              Bringing stories to life~
             </p>
           </section>
 
@@ -35,20 +35,24 @@ export default async function Home() {
               <h2 className="font-serif text-2xl text-accent2 mb-6">
                 Featured Stories
               </h2>
-              {stories.length > 0 ? (
-                <div className="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(16rem,1fr))] auto-rows-fr">
-                  {stories.map((story) => (
-                    <StoryCard
-                      key={story.slug}
-                      title={story.title}
-                      description={story.description}
-                      slug={story.slug}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <p className="text-page-text-muted">No featured stories yet.</p>
-              )}
+              {stories.length > 0
+                ? (
+                  <div className="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(16rem,1fr))] auto-rows-fr">
+                    {stories.map((story) => (
+                      <StoryCard
+                        key={story.slug}
+                        title={story.title}
+                        description={story.description}
+                        slug={story.slug}
+                      />
+                    ))}
+                  </div>
+                )
+                : (
+                  <p className="text-page-text-muted">
+                    No featured stories yet.
+                  </p>
+                )}
             </div>
           </section>
         </div>
@@ -57,8 +61,8 @@ export default async function Home() {
         <section className="px-4 py-4 bg-accent3 text-page-bg text-center rounded-lg max-w-md mx-auto mb-8">
           <h2 className="font-serif text-lg mb-1">Authorship</h2>
           <p className="mb-3 max-w-prose mx-auto text-sm">
-            Personifine is a small, personal project to showcase writing.  
-            If you have a story to tell, apply for authorship.
+            Personifine is a small, personal project to showcase writing. If you
+            have a story to tell, apply for authorship.
           </p>
           <a
             href="/apply"

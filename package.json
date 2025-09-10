@@ -2,11 +2,6 @@
   "name": "personifine-writing",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
-    "start": "next start"
-  },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.1",
     "@vercel/analytics": "^1.5.0",
