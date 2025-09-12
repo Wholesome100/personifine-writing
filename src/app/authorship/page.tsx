@@ -30,7 +30,7 @@ export default function Authorship() {
             </h1>
             <p className="text-page-text-muted max-w-prose">
               Thank you for your interest! If you would like to contribute a story to Personifine, please
-              provide the username, a contact email where you can be
+              provide a username, a contact email where you can be
               reached, and a brief pitch for what you plan to write.
             </p>
           </section>
