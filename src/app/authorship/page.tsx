@@ -12,7 +12,7 @@ export default function Authorship() {
 
     await sql.query(
       "INSERT INTO applicants (username, contact_email, pitch) VALUES ($1, $2, $3)",
-      [username, contactEmail, pitch]
+      [username, contactEmail, pitch],
     );
   }
 
@@ -29,9 +29,10 @@ export default function Authorship() {
               Apply for Authorship
             </h1>
             <p className="text-page-text-muted max-w-prose">
-              Thank you for your interest! If you would like to contribute a story to Personifine, please
-              provide a username, a contact email where you can be
-              reached, and a brief pitch for what you plan to write.
+              Thank you for your interest! If you would like to contribute a
+              story to Personifine, please provide a username, a contact email
+              where you can be reached, and a brief pitch for what you plan to
+              write.
             </p>
           </section>
 

@@ -16,10 +16,13 @@ export default function About() {
               What is Personifine?
             </h1>
             <p className="text-lg text-page-text-muted leading-relaxed">
-              Personifine is a website created to showcase my writing in a clean, ad‑free format.
-              This is in contrast to sites such as Wattpad, which, in my opinion, do not present a convenient reading experience. 
-              I wanted to amend that. In its current form, the website is tailored for my personal writings, but I would love to hear from any
-              prospective contributors as I continue to expand the site.
+              Personifine is a website created to showcase my writing in a
+              clean, ad‑free format. This is in contrast to sites such as
+              Wattpad, which, in my opinion, do not present a convenient reading
+              experience. I wanted to amend that. In its current form, the
+              website is tailored for my personal writings, but I would love to
+              hear from any prospective contributors as I continue to expand the
+              site.
             </p>
           </section>
 
@@ -43,14 +46,16 @@ export default function About() {
                 About the Creator
               </h2>
               <p className="text-lg text-page-text-muted leading-relaxed">
-                I am Wholesome100, a Computer Science master's graduate, looking to create engaging
-                and useful software for others. The stories I've posted here were written
-                throughout 2020–2024, on the side, throughout college and my first job.
-                They have been left largely unedited to provide a clear progression of my skills
-                throughout the years.
+                I am Wholesome100, a Computer Science master's graduate, looking
+                to create engaging and useful software for others. The stories
+                I've posted here were written throughout 2020–2024, on the side,
+                throughout college and my first job. They have been left largely
+                unedited to provide a clear progression of my skills throughout
+                the years.
               </p>
               <p className="mt-4 text-lg text-page-text-muted leading-relaxed">
-                Thank you for visiting Personifine; I hope you enjoyed the stories as much as I did when writing them.
+                Thank you for visiting Personifine; I hope you enjoyed the
+                stories as much as I did when writing them.
               </p>
             </div>
           </section>
