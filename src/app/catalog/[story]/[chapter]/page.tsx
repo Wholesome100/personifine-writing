@@ -1,3 +1,36 @@
-export default function Chapter() {
-  return <span>This is the page with the e-reader for a single chapter</span>;
+import { sql } from "@/db/context";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+
+async function getCorpus(slug: string) {
+  const response = await sql.query(
+    "SELECT chapter_id, sequence, corpus FROM chapters WHERE slug = $1",
+    [slug],
+  );
+  return response;
+}
+
+export default async function Chapter(
+  { params }: { params: Promise<{ chapter: string }> },
+) {
+  const { chapter } = await params;
+  console.log(chapter);
+
+  const response = await getCorpus(chapter);
+  if (!response.length) {
+    notFound();
+  }
+  // Unpack the returned corpus if valid
+  const chapterData = response[0];
+  console.log(chapterData)
+
+  return (
+    <div className="flex flex-col min-h-screen bg-page-bg text-page-text">
+      <Header />
+      {chapterData.corpus}
+      <Footer />
+    </div>
+  );
 }

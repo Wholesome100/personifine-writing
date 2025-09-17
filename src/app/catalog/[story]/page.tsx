@@ -14,7 +14,7 @@ async function getStoryDetails(slug: string) {
 
 async function getChapterDetails(story_id: string) {
   const response = await sql.query(
-    "SELECT chapter_id, title, description FROM chapters WHERE story_ID = $1 ORDER BY sequence ASC",
+    "SELECT chapter_id, title, description, slug FROM chapters WHERE story_ID = $1 ORDER BY sequence ASC",
     [story_id],
   );
   return response;
