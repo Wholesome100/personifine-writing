@@ -15,7 +15,6 @@ export default async function Chapter(
   { params }: { params: Promise<{ chapter: string }> },
 ) {
   const { chapter } = await params;
-  console.log(chapter);
 
   const response = await getCorpus(chapter);
   if (!response.length) {
@@ -23,7 +22,6 @@ export default async function Chapter(
   }
   // Unpack the returned corpus if valid
   const chapterData = response[0];
-  console.log(chapterData);
 
   return (
     <div className="flex flex-col min-h-screen bg-page-bg text-page-text">
