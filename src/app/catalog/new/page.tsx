@@ -3,34 +3,37 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import bcrypt from "bcrypt";
 
-const saltRounds = 12;
-
 async function createNewStory(formData: FormData) {
   "use server";
 
-  const username = formData.get("username") as string;
-  const passCode = formData.get("passcode") as string;
+  try {
+    const username = formData.get("username") as string;
+    const passCode = formData.get("passcode") as string;
 
-  const dbHash = await sql.query("SELECT pass_code FROM users WHERE user_name = $1", [username])
-  //console.log(dbHash[0].pass_code)
+    const dbHash = await sql.query(
+      "SELECT pass_code FROM users WHERE user_name = $1",
+      [username],
+    );
 
-  
-  bcrypt.compare(passCode, dbHash[0]?.pass_code, function (_err, result) {
-    console.log(result);
-  });
-  
+    if (dbHash.length != 1) {
+      throw new Error("Invalid Credentials.");
+    }
 
+    const match = await bcrypt.compare(passCode, dbHash[0]?.pass_code);
 
-  // try{
-  //   bcrypt.compare(passCode, dbPass, function (_err, result) {
-  //     console.log(result);
-  //   });
-  // }
+    if (!match) {
+      throw new Error("Invalid Credentials.");
+    }
 
-  // await sql.query(
-  //   "INSERT INTO stories (username, contact_email, pitch) VALUES ($1, $2, $3)",
-  //   [username, contactEmail, pitch],
-  // );
+    const userData = await sql.query(
+      "SELECT user_id, role FROM users WHERE user_name = $1",
+      [username],
+    );
+
+    // Down here we need to insert the user id alongisde the form data into our stories
+  } catch (err) {
+    console.error("Error when creating new story:", err);
+  }
 }
 
 export default async function NewStory() {
@@ -48,7 +51,7 @@ export default async function NewStory() {
 
           {/* Form */}
           <form action={createNewStory} className="space-y-6">
-              <div>
+            <div>
               <label className="block mb-1 font-medium" htmlFor="username">
                 Username
               </label>
