@@ -2,20 +2,20 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { sql } from "@/db/context";
 
+async function createApplicant(formData: FormData) {
+  "use server";
+
+  const username = formData.get("username") as string;
+  const contactEmail = formData.get("contact_email") as string;
+  const pitch = formData.get("pitch") as string;
+
+  await sql.query(
+    "INSERT INTO applicants (username, contact_email, pitch) VALUES ($1, $2, $3)",
+    [username, contactEmail, pitch],
+  );
+}
+
 export default function Authorship() {
-  async function createApplicant(formData: FormData) {
-    "use server";
-
-    const username = formData.get("username") as string;
-    const contactEmail = formData.get("contact_email") as string;
-    const pitch = formData.get("pitch") as string;
-
-    await sql.query(
-      "INSERT INTO applicants (username, contact_email, pitch) VALUES ($1, $2, $3)",
-      [username, contactEmail, pitch],
-    );
-  }
-
   return (
     <div className="flex flex-col min-h-screen bg-page-bg text-page-text">
       <Header />
