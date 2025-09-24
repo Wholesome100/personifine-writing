@@ -9,9 +9,23 @@ async function createNewStory(formData: FormData) {
   "use server";
 
   const username = formData.get("username") as string;
-  const contactEmail = formData.get("contact_email") as string;
-  const pitch = formData.get("pitch") as string;
   const passCode = formData.get("passcode") as string;
+
+  const dbHash = await sql.query("SELECT pass_code FROM users WHERE user_name = $1", [username])
+  //console.log(dbHash[0].pass_code)
+
+  
+  bcrypt.compare(passCode, dbHash[0]?.pass_code, function (_err, result) {
+    console.log(result);
+  });
+  
+
+
+  // try{
+  //   bcrypt.compare(passCode, dbPass, function (_err, result) {
+  //     console.log(result);
+  //   });
+  // }
 
   // await sql.query(
   //   "INSERT INTO stories (username, contact_email, pitch) VALUES ($1, $2, $3)",
@@ -34,6 +48,18 @@ export default async function NewStory() {
 
           {/* Form */}
           <form action={createNewStory} className="space-y-6">
+              <div>
+              <label className="block mb-1 font-medium" htmlFor="username">
+                Username
+              </label>
+              <input
+                id="username"
+                name="username"
+                type="text"
+                required
+                className="w-full border rounded px-3 py-2"
+              />
+            </div>
             <div>
               <label className="block mb-1 font-medium" htmlFor="passcode">
                 Passcode
