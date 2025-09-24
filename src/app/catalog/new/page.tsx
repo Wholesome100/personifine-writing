@@ -20,6 +20,6 @@ async function getChapterDetails(story_id: string) {
   return response;
 }
 
-export default async function EditStory() {
-    return <span>This is where users will make changes to existing stories</span>
+export default async function NewStory() {
+  return <span>This is where users will submit new stories</span>;
 }
