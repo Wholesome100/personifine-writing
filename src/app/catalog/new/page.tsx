@@ -15,12 +15,14 @@ async function createNewStory(formData: FormData) {
       [username],
     );
 
+    // Error if we return no users with the given username
     if (dbHash.length != 1) {
       throw new Error("Invalid Credentials.");
     }
 
     const match = await bcrypt.compare(passCode, dbHash[0]?.pass_code);
 
+    // Error if we have a mismatch between the given and hashed passcode
     if (!match) {
       throw new Error("Invalid Credentials.");
     }
@@ -29,6 +31,11 @@ async function createNewStory(formData: FormData) {
       "SELECT user_id, role FROM users WHERE user_name = $1",
       [username],
     );
+    
+    // Error if the user doesn't have the proper role
+    if (!["author", "admin"].includes(userData[0].role)){
+      throw new Error("Unauthorized Operation.")
+    }
 
     // Down here we need to insert the user id alongisde the form data into our stories
   } catch (err) {
