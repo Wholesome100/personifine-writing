@@ -15,14 +15,11 @@ async function createNewStory(formData: FormData) {
       [username],
     );
 
-    // Error if we return no users with the given username
-    if (dbHash.length != 1) {
+    if (dbHash.length !== 1) {
       throw new Error("Invalid Credentials.");
     }
 
     const match = await bcrypt.compare(passCode, dbHash[0]?.pass_code);
-
-    // Error if we have a mismatch between the given and hashed passcode
     if (!match) {
       throw new Error("Invalid Credentials.");
     }
@@ -31,13 +28,24 @@ async function createNewStory(formData: FormData) {
       "SELECT user_id, role FROM users WHERE user_name = $1",
       [username],
     );
-    
-    // Error if the user doesn't have the proper role
-    if (!["author", "admin"].includes(userData[0].role)){
-      throw new Error("Unauthorized Operation.")
+
+    if (!["author", "admin"].includes(userData[0].role)) {
+      throw new Error("Unauthorized Operation.");
     }
 
-    // Down here we need to insert the user id alongisde the form data into our stories
+    const title = formData.get("title") as string;
+    const slug = formData.get("slug") as string;
+    const description = formData.get("description") as string;
+    const summary = formData.get("summary") as string;
+    const featured = formData.get("featured") === "on";
+
+    await sql.query(
+      `INSERT INTO stories (user_id, title, slug, description, summary, featured)
+       VALUES ($1, $2, $3, $4, $5, $6)`,
+      [userData[0].user_id, title, slug, description, summary, featured],
+    );
+
+    console.log("Story created successfully.");
   } catch (err) {
     console.error("Error when creating new story:", err);
   }
@@ -58,6 +66,7 @@ export default async function NewStory() {
 
           {/* Form */}
           <form action={createNewStory} className="space-y-6">
+            {/* Username */}
             <div>
               <label className="block mb-1 font-medium" htmlFor="username">
                 Username
@@ -70,6 +79,8 @@ export default async function NewStory() {
                 className="w-full border rounded px-3 py-2"
               />
             </div>
+
+            {/* Passcode */}
             <div>
               <label className="block mb-1 font-medium" htmlFor="passcode">
                 Passcode
@@ -77,10 +88,79 @@ export default async function NewStory() {
               <input
                 id="passcode"
                 name="passcode"
+                type="password"
+                required
+                className="w-full border rounded px-3 py-2"
+              />
+            </div>
+
+            {/* Title */}
+            <div>
+              <label className="block mb-1 font-medium" htmlFor="title">
+                Title
+              </label>
+              <input
+                id="title"
+                name="title"
                 type="text"
                 required
                 className="w-full border rounded px-3 py-2"
               />
+            </div>
+
+            {/* Slug */}
+            <div>
+              <label className="block mb-1 font-medium" htmlFor="slug">
+                Slug
+              </label>
+              <input
+                id="slug"
+                name="slug"
+                type="text"
+                required
+                className="w-full border rounded px-3 py-2"
+              />
+            </div>
+
+            {/* Description (short tagline) */}
+            <div>
+              <label className="block mb-1 font-medium" htmlFor="description">
+                Description
+              </label>
+              <input
+                id="description"
+                name="description"
+                type="text"
+                className="w-full border rounded px-3 py-2"
+                placeholder="Your story in 1-2 sentences."
+              />
+            </div>
+
+            {/* Summary (longer overview) */}
+            <div>
+              <label className="block mb-1 font-medium" htmlFor="summary">
+                Summary
+              </label>
+              <textarea
+                id="summary"
+                name="summary"
+                rows={6}
+                className="w-full border rounded px-3 py-2"
+                placeholder="Introduce your story to readers."
+              />
+            </div>
+
+            {/* Featured */}
+            <div className="flex items-center">
+              <input
+                id="featured"
+                name="featured"
+                type="checkbox"
+                className="mr-2"
+              />
+              <label htmlFor="featured" className="font-medium">
+                Featured
+              </label>
             </div>
 
             <button
