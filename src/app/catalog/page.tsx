@@ -3,7 +3,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import StoryCard from "@/components/StoryCard";
 
-// NOTE: Getting data in a server component runs into a caching issue, so for now these need to use "get server"
+// This is here to force the fetch to be dynamic for now. Revalidate functions will be added in the future
+export const dynamic = "force-dynamic"
+
 async function getCatalogStories() {
   const response =
     await sql`SELECT title, description, slug FROM stories ORDER BY created_at DESC`;
