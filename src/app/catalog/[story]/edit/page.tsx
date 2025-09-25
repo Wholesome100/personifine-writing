@@ -1,7 +1,7 @@
 import { sql } from "@/db/context";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import bcrypt from "bcrypt";
 
 async function editStory(formData: FormData) {
@@ -64,8 +64,14 @@ async function editStory(formData: FormData) {
       [title, slug, description, summary, featured, storyId],
     );
 
+    // Redirect the user to the updated page
     console.log("Story updated successfully.");
-  } catch (err) {
+    redirect(`/catalog/${slug}`);
+  } catch (err: any) {
+    // fyi, redirect throws an error that needs to be passed along so nextjs can reroute the user
+    if (err?.digest?.startsWith("NEXT_REDIRECT")) {
+      throw err;
+    }
     console.error("Error when editing story:", err);
   }
 }
@@ -78,7 +84,6 @@ async function getStory(slug: string) {
   );
   return response;
 }
-
 
 export default async function EditStory(
   { params }: { params: Promise<{ story: string }> },
@@ -105,35 +110,35 @@ export default async function EditStory(
           <input type="hidden" name="story_id" value={storyData.story_id} />
 
           {/* Credentials Section */}
-  <div className="border border-accent1 rounded-md p-4 space-y-4">
-    <h2 className="font-semibold text-accent1 mb-2">Credentials</h2>
+          <div className="border border-accent1 rounded-md p-4 space-y-4">
+            <h2 className="font-semibold text-accent1 mb-2">Credentials</h2>
 
-    <div>
-      <label className="block mb-1 font-medium" htmlFor="username">
-        Username
-      </label>
-      <input
-        id="username"
-        name="username"
-        type="text"
-        required
-        className="w-full border rounded px-3 py-2"
-      />
-    </div>
+            <div>
+              <label className="block mb-1 font-medium" htmlFor="username">
+                Username
+              </label>
+              <input
+                id="username"
+                name="username"
+                type="text"
+                required
+                className="w-full border rounded px-3 py-2"
+              />
+            </div>
 
-    <div>
-      <label className="block mb-1 font-medium" htmlFor="passcode">
-        Passcode
-      </label>
-      <input
-        id="passcode"
-        name="passcode"
-        type="password"
-        required
-        className="w-full border rounded px-3 py-2"
-      />
-    </div>
-  </div>
+            <div>
+              <label className="block mb-1 font-medium" htmlFor="passcode">
+                Passcode
+              </label>
+              <input
+                id="passcode"
+                name="passcode"
+                type="password"
+                required
+                className="w-full border rounded px-3 py-2"
+              />
+            </div>
+          </div>
 
           <div>
             <label className="block mb-1 font-medium" htmlFor="title">
