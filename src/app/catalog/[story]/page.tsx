@@ -4,6 +4,9 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+// This is here to force the fetch to be dynamic for now. Revalidate functions will be added in the future
+export const dynamic = "force-dynamic"
+
 async function getStoryDetails(slug: string) {
   const response = await sql.query(
     "SELECT story_id, title, summary FROM stories WHERE slug = $1",

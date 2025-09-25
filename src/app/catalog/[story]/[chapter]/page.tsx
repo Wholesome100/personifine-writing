@@ -3,6 +3,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { notFound } from "next/navigation";
 
+// This is here to force the fetch to be dynamic for now. Revalidate functions will be added in the future
+export const dynamic = "force-dynamic"
+
 async function getCorpus(slug: string) {
   const response = await sql.query(
     "SELECT chapter_id, sequence, corpus FROM chapters WHERE slug = $1",
