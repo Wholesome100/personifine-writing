@@ -77,21 +77,23 @@ export default async function DeleteStory(
       <Header />
 
       <main className="flex-grow w-full max-w-3xl mx-auto px-4 py-8">
-        <h1 className="font-serif text-3xl sm:text-4xl text-red-600 mb-6">
+        <h1 className="font-serif text-3xl sm:text-4xl text-accent3 mb-6">
           Delete Story
         </h1>
 
-        <p className="mb-6 text-red-500">
+        <p className="mb-6 text-accent3">
           Are you sure you want to permanently delete{" "}
-          <span className="font-semibold">"{storyData.title}"</span>? This action
-          cannot be undone.
+          <span className="font-semibold">"{storyData.title}"</span>? This
+          action cannot be undone.
         </p>
 
         <form action={deleteStory} className="space-y-6">
           <input type="hidden" name="story_id" value={storyData.story_id} />
 
-          <div className="border border-red-500 rounded-md p-4 space-y-4">
-            <h2 className="font-semibold text-red-600 mb-2">Confirm Credentials</h2>
+          <div className="border border-accent3 rounded-md p-4 space-y-4">
+            <h2 className="font-semibold text-accent3 mb-2">
+              Confirm Credentials
+            </h2>
 
             <div>
               <label className="block mb-1 font-medium" htmlFor="username">
@@ -122,7 +124,7 @@ export default async function DeleteStory(
 
           <button
             type="submit"
-            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+            className="bg-accent3 text-page-bg px-4 py-2 rounded hover:bg-accent3-hover"
           >
             Yes, Delete Story
           </button>

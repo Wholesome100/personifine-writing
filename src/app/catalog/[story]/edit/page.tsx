@@ -91,9 +91,7 @@ export default async function EditStory(
   const { story } = await params;
 
   const response = await getStory(story);
-  if (!response.length) {
-    notFound();
-  }
+  if (!response.length) notFound();
 
   const storyData = response[0];
 
@@ -140,6 +138,7 @@ export default async function EditStory(
             </div>
           </div>
 
+          {/* Story Fields */}
           <div>
             <label className="block mb-1 font-medium" htmlFor="title">
               Title
@@ -209,7 +208,7 @@ export default async function EditStory(
 
           <button
             type="submit"
-            className="bg-accent1 text-white px-4 py-2 rounded hover:bg-accent1-hover"
+            className="bg-accent1 text-page-bg px-4 py-2 rounded hover:bg-accent1-hover"
           >
             Save Changes
           </button>
