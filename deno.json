@@ -18,6 +18,11 @@
       "src/app/globals.css"
     ]
   },
+  "lint": {
+    "rules": {
+      "exclude": ["no-explicit-any"]
+    }
+  },
   "tasks": {
     "dev": "deno run -A --unstable-detect-cjs npm:next@latest dev --turbopack",
     "build": "deno run -A --unstable-detect-cjs npm:next@latest build --turbopack",
