@@ -2,6 +2,7 @@ import { sql } from "@/db/context";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import bcrypt from "bcrypt";
+import { redirect } from "next/navigation";
 
 async function createNewStory(formData: FormData) {
   "use server";
@@ -44,10 +45,15 @@ async function createNewStory(formData: FormData) {
        VALUES ($1, $2, $3, $4, $5, $6)`,
       [userData[0].user_id, title, slug, description, summary, featured],
     );
-
+    
     console.log("Story created successfully.");
-  } catch (err) {
-    console.error("Error when creating new story:", err);
+    redirect(`/catalog/${slug}`);
+  } catch (err: any) {
+    // fyi, redirect throws an error that needs to be passed along so nextjs can reroute the user
+    if (err?.digest?.startsWith("NEXT_REDIRECT")) {
+      throw err;
+    }
+    console.error("Error when creating story:", err);
   }
 }
 
