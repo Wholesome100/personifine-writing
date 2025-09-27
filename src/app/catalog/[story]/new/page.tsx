@@ -36,6 +36,19 @@ async function createNewChapter(formData: FormData) {
 
     // Above flows are similar, but it needs to be checked:
     // 1. The story we're inserting into is owned by the user
+    const story_id = formData.get("story_id") as string;
+
+    const storyOwner = await sql.query(
+      "SELECT user_id FROM stories WHERE story_id = $1",
+      [story_id],
+    );
+    if (
+      storyOwner.length !== 1 ||
+      (storyOwner[0].user_id !== userData[0].user_id &&
+        userData[0].role !== "admin")
+    ) {
+      throw new Error("Unauthorized Operation.");
+    }
 
     const title = formData.get("title") as string;
     const slug = formData.get("slug") as string;
@@ -45,7 +58,7 @@ async function createNewChapter(formData: FormData) {
     await sql.query(
       `INSERT INTO chapters (story_id, title, slug, description, corpus)
          VALUES ($1, $2, $3, $4, $5)`,
-      [userData[0].user_id, title, slug, description, corpus],
+      [story_id, title, slug, description, corpus],
     );
 
     console.log("Chapter created successfully.");
@@ -54,18 +67,23 @@ async function createNewChapter(formData: FormData) {
   }
 }
 
-async function getStoryId(slug: string){
-  const response = await sql.query("SELECT story_id FROM stories WHERE slug = $1", [slug]);
+async function getStoryId(slug: string) {
+  const response = await sql.query(
+    "SELECT story_id FROM stories WHERE slug = $1",
+    [slug],
+  );
   return response;
 }
 
-export default async function NewChapter({ params }: { params: Promise<{ story: string }> },) {
-    const { story } = await params;
-  
-    const response = await getStoryId(story);
-    if (!response.length) notFound();
-  
-    const storyData = response[0];
+export default async function NewChapter(
+  { params }: { params: Promise<{ story: string }> },
+) {
+  const { story } = await params;
+
+  const response = await getStoryId(story);
+  if (!response.length) notFound();
+
+  const storyData = response[0];
   return (
     <div className="flex flex-col min-h-screen bg-page-bg text-page-text">
       <Header />
@@ -166,19 +184,6 @@ export default async function NewChapter({ params }: { params: Promise<{ story: 
                 className="w-full border rounded px-3 py-2"
                 placeholder="Write something!"
               />
-            </div>
-
-            {/* Featured */}
-            <div className="flex items-center">
-              <input
-                id="featured"
-                name="featured"
-                type="checkbox"
-                className="mr-2"
-              />
-              <label htmlFor="featured" className="font-medium">
-                Featured
-              </label>
             </div>
 
             <button
