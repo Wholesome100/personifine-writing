@@ -174,12 +174,12 @@ export default async function NewChapter(
 
             {/* Summary (longer overview) */}
             <div>
-              <label className="block mb-1 font-medium" htmlFor="summary">
+              <label className="block mb-1 font-medium" htmlFor="corpus">
                 Corpus
               </label>
               <textarea
-                id="summary"
-                name="summary"
+                id="corpus"
+                name="corpus"
                 rows={6}
                 className="w-full border rounded px-3 py-2"
                 placeholder="Write something!"
