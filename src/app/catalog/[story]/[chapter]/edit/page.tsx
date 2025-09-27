@@ -105,7 +105,11 @@ export default async function EditChapter(
 
         <form action={editChapter} className="space-y-6">
           <input type="hidden" name="story_id" value={chapterData.story_id} />
-          <input type="hidden" name="chapter_id" value={chapterData.chapter_id} />
+          <input
+            type="hidden"
+            name="chapter_id"
+            value={chapterData.chapter_id}
+          />
 
           {/* Credentials Section */}
           <div className="border border-accent1 rounded-md p-4 space-y-4">

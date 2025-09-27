@@ -96,7 +96,11 @@ export default async function DeleteChapter(
 
         <form action={deleteChapter} className="space-y-6">
           <input type="hidden" name="story_id" value={chapterData.story_id} />
-          <input type="hidden" name="chapter_id" value={chapterData.chapter_id} />
+          <input
+            type="hidden"
+            name="chapter_id"
+            value={chapterData.chapter_id}
+          />
 
           <div className="border border-accent3 rounded-md p-4 space-y-4">
             <h2 className="font-semibold text-accent3 mb-2">
