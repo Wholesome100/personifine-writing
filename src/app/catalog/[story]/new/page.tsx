@@ -2,6 +2,7 @@ import { sql } from "@/db/context";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import bcrypt from "bcrypt";
+import { notFound } from "next/navigation";
 
 async function createNewChapter(formData: FormData) {
   "use server";
@@ -33,13 +34,16 @@ async function createNewChapter(formData: FormData) {
       throw new Error("Unauthorized Operation.");
     }
 
+    // Above flows are similar, but it needs to be checked:
+    // 1. The story we're inserting into is owned by the user
+
     const title = formData.get("title") as string;
     const slug = formData.get("slug") as string;
     const description = formData.get("description") as string;
     const corpus = formData.get("corpus") as string;
 
     await sql.query(
-      `INSERT INTO chapters (user_id, title, slug, description, summary, featured)
+      `INSERT INTO chapters (story_id, title, slug, description, corpus)
          VALUES ($1, $2, $3, $4, $5)`,
       [userData[0].user_id, title, slug, description, corpus],
     );
@@ -50,7 +54,18 @@ async function createNewChapter(formData: FormData) {
   }
 }
 
-export default function NewChapter() {
+async function getStoryId(slug: string){
+  const response = await sql.query("SELECT story_id FROM stories WHERE slug = $1", [slug]);
+  return response;
+}
+
+export default async function NewChapter({ params }: { params: Promise<{ story: string }> },) {
+    const { story } = await params;
+  
+    const response = await getStoryId(story);
+    if (!response.length) notFound();
+  
+    const storyData = response[0];
   return (
     <div className="flex flex-col min-h-screen bg-page-bg text-page-text">
       <Header />
@@ -59,12 +74,13 @@ export default function NewChapter() {
         <div className="max-w-5xl mx-auto px-4 w-full">
           <section className="mb-8">
             <h1 className="font-serif text-4xl sm:text-5xl text-accent1 mb-4">
-              Create a New Story
+              Create a New Chapter
             </h1>
           </section>
 
           {/* Form */}
           <form action={createNewChapter} className="space-y-6">
+            <input type="hidden" name="story_id" value={storyData.story_id} />
             {/* Credentials Section */}
             <div className="border border-accent1 rounded-md p-4 space-y-4">
               <h2 className="font-semibold text-accent1 mb-2">Credentials</h2>
@@ -134,21 +150,21 @@ export default function NewChapter() {
                 name="description"
                 type="text"
                 className="w-full border rounded px-3 py-2"
-                placeholder="Your story in 1-2 sentences."
+                placeholder="Your chapter in 1-2 sentences."
               />
             </div>
 
             {/* Summary (longer overview) */}
             <div>
               <label className="block mb-1 font-medium" htmlFor="summary">
-                Summary
+                Corpus
               </label>
               <textarea
                 id="summary"
                 name="summary"
                 rows={6}
                 className="w-full border rounded px-3 py-2"
-                placeholder="Introduce your story to readers."
+                placeholder="Write something!"
               />
             </div>
 
