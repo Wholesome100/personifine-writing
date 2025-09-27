@@ -45,7 +45,7 @@ async function createNewStory(formData: FormData) {
        VALUES ($1, $2, $3, $4, $5, $6)`,
       [userData[0].user_id, title, slug, description, summary, featured],
     );
-    
+
     console.log("Story created successfully.");
     redirect(`/catalog/${slug}`);
   } catch (err: any) {

@@ -4,11 +4,11 @@ import Footer from "@/components/Footer";
 import { notFound } from "next/navigation";
 
 // This is here to force the fetch to be dynamic for now. Revalidate functions will be added in the future
-export const dynamic = "force-dynamic"
+export const dynamic = "force-dynamic";
 
 async function getCorpus(slug: string) {
   const response = await sql.query(
-    "SELECT chapter_id, sequence, corpus FROM chapters WHERE slug = $1",
+    "SELECT chapter_id, title, corpus FROM chapters WHERE slug = $1",
     [slug],
   );
   return response;
@@ -32,7 +32,7 @@ export default async function Chapter(
 
       <main className="flex-grow w-full max-w-3xl mx-auto px-4 py-8">
         <h1 className="font-serif text-3xl sm:text-4xl text-accent1 mb-6">
-          Chapter {chapterData.sequence}
+          {chapterData.title}
         </h1>
 
         <p className="leading-relaxed whitespace-pre-line text-lg">

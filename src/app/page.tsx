@@ -6,7 +6,7 @@ import Header from "@/components/Header";
 import StoryCard from "@/components/StoryCard";
 
 // This is here to force the fetch to be dynamic for now. Revalidate functions will be added in the future
-export const dynamic = "force-dynamic"
+export const dynamic = "force-dynamic";
 
 async function getFeatured() {
   const response =
