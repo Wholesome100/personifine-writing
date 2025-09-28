@@ -72,6 +72,8 @@ async function editChapter(formData: FormData) {
   }
 }
 
+export const dynamic = "force-dynamic";
+
 // Helper to fetch chapter by story + chapter slug
 async function getChapter(storySlug: string, chapterSlug: string) {
   const response = await sql.query(

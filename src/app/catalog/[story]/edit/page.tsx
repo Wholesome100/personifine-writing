@@ -76,6 +76,7 @@ async function editStory(formData: FormData) {
     console.error("Error when editing story:", err);
   }
 }
+export const dynamic = "force-dynamic";
 
 // Helper to fetch story by slug
 async function getStory(slug: string) {

@@ -68,6 +68,7 @@ async function createNewChapter(formData: FormData) {
   }
 }
 
+
 async function getStoryId(slug: string) {
   const response = await sql.query(
     "SELECT story_id FROM stories WHERE slug = $1",

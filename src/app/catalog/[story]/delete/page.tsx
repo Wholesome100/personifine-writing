@@ -54,6 +54,8 @@ async function deleteStory(formData: FormData) {
   }
 }
 
+export const dynamic = "force-dynamic";
+
 // Helper to fetch story by slug
 async function getStory(slug: string) {
   const response = await sql.query(
