@@ -101,7 +101,7 @@ export default async function EditChapter(
               name="corpus"
               rows={6}
               defaultValue={chapterData.corpus}
-              className="w-full border rounded px-3 py-2"
+              className="w-full border rounded px-3 py-2 whitespace-pre-wrap resize-none"
             />
           </div>
 

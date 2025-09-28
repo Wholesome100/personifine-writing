@@ -93,7 +93,7 @@ export default async function NewChapter(
                 id="corpus"
                 name="corpus"
                 rows={6}
-                className="w-full border rounded px-3 py-2"
+                className="w-full border rounded px-3 py-2 whitespace-pre-wrap resize-none"
                 placeholder="Write something!"
               />
             </div>

@@ -67,7 +67,7 @@ export default async function NewStory() {
                 id="summary"
                 name="summary"
                 rows={6}
-                className="w-full border rounded px-3 py-2"
+                className="w-full border rounded px-3 py-2 whitespace-pre-wrap resize-none"
                 placeholder="Introduce your story to readers."
               />
             </div>

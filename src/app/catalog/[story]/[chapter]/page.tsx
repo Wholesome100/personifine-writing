@@ -35,9 +35,9 @@ export default async function Chapter(
           {chapterData.title}
         </h1>
 
-        <p className="leading-relaxed whitespace-pre-line text-lg">
+        <div className="text-lg leading-relaxed whitespace-pre-wrap">
           {chapterData.corpus}
-        </p>
+        </div>
       </main>
 
       <Footer />
