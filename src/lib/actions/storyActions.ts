@@ -129,7 +129,7 @@ export async function editStory(formData: FormData) {
   }
 }
 
-// Server action for deleting a story
+// Server function for deleting a story
 export async function deleteStory(formData: FormData) {
   try {
     const username = formData.get("username") as string;
