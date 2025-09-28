@@ -39,7 +39,7 @@ export async function createNewChapter(formData: FormData) {
     const story_id = formData.get("story_id") as string;
 
     const storyOwner = await sql.query(
-      "SELECT user_id FROM stories WHERE story_id = $1",
+      "SELECT user_id, slug FROM stories WHERE story_id = $1",
       [story_id],
     );
     if (
