@@ -1,75 +1,12 @@
 import { sql } from "@/db/context";
+import { notFound } from "next/navigation";
+import { editChapter } from "@/lib/actions/chapterActions";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { notFound, redirect } from "next/navigation";
-import bcrypt from "bcrypt";
+import FormCredentials from "@/components/FormCredentials";
 
-async function editChapter(formData: FormData) {
-  "use server";
-
-  try {
-    const username = formData.get("username") as string;
-    const passCode = formData.get("passcode") as string;
-    const storyId = formData.get("story_id") as string;
-    const chapterId = formData.get("chapter_id") as string;
-
-    // Verify credentials
-    const dbHash = await sql.query(
-      "SELECT pass_code FROM users WHERE user_name = $1",
-      [username],
-    );
-    if (dbHash.length !== 1) throw new Error("Invalid Credentials.");
-
-    const match = await bcrypt.compare(passCode, dbHash[0]?.pass_code);
-    if (!match) throw new Error("Invalid Credentials.");
-
-    // Get user info
-    const userData = await sql.query(
-      "SELECT user_id, role FROM users WHERE user_name = $1",
-      [username],
-    );
-
-    // Ensure user is owner or admin
-    const storyOwner = await sql.query(
-      "SELECT user_id, slug FROM stories WHERE story_id = $1",
-      [storyId],
-    );
-    if (
-      storyOwner.length !== 1 ||
-      (storyOwner[0].user_id !== userData[0].user_id &&
-        userData[0].role !== "admin")
-    ) {
-      throw new Error("Unauthorized Operation.");
-    }
-
-    // Collect updated fields
-    const title = formData.get("title") as string;
-    const slug = formData.get("slug") as string;
-    const description = formData.get("description") as string;
-    const corpus = formData.get("corpus") as string;
-
-    // Update the chapter
-    await sql.query(
-      `UPDATE chapters
-       SET title = $1,
-           slug = $2,
-           description = $3,
-           corpus = $4,
-           updated_at = now()
-       WHERE chapter_id = $5
-         AND story_id = $6`,
-      [title, slug, description, corpus, chapterId, storyId],
-    );
-
-    console.log("Chapter updated successfully.");
-    redirect(`/catalog/${storyOwner[0].slug}/${slug}`);
-  } catch (err: any) {
-    if (err?.digest?.startsWith("NEXT_REDIRECT")) {
-      throw err;
-    }
-    console.error("Error when editing chapter:", err);
-  }
-}
+export const dynamic = "force-dynamic";
 
 // Helper to fetch chapter by story + chapter slug
 async function getChapter(storySlug: string, chapterSlug: string) {
@@ -111,36 +48,7 @@ export default async function EditChapter(
             value={chapterData.chapter_id}
           />
 
-          {/* Credentials Section */}
-          <div className="border border-accent1 rounded-md p-4 space-y-4">
-            <h2 className="font-semibold text-accent1 mb-2">Credentials</h2>
-
-            <div>
-              <label className="block mb-1 font-medium" htmlFor="username">
-                Username
-              </label>
-              <input
-                id="username"
-                name="username"
-                type="text"
-                required
-                className="w-full border rounded px-3 py-2"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-1 font-medium" htmlFor="passcode">
-                Passcode
-              </label>
-              <input
-                id="passcode"
-                name="passcode"
-                type="password"
-                required
-                className="w-full border rounded px-3 py-2"
-              />
-            </div>
-          </div>
+          <FormCredentials />
 
           {/* Chapter Fields */}
           <div>

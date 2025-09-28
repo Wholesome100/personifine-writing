@@ -1,71 +1,12 @@
 import { sql } from "@/db/context";
+import { notFound } from "next/navigation";
+import { createNewChapter } from "@/lib/actions/chapterActions";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import bcrypt from "bcrypt";
-import { notFound } from "next/navigation";
+import FormCredentials from "@/components/FormCredentials";
 
-async function createNewChapter(formData: FormData) {
-  "use server";
-
-  try {
-    const username = formData.get("username") as string;
-    const passCode = formData.get("passcode") as string;
-
-    const dbHash = await sql.query(
-      "SELECT pass_code FROM users WHERE user_name = $1",
-      [username],
-    );
-
-    if (dbHash.length !== 1) {
-      throw new Error("Invalid Credentials.");
-    }
-
-    const match = await bcrypt.compare(passCode, dbHash[0]?.pass_code);
-    if (!match) {
-      throw new Error("Invalid Credentials.");
-    }
-
-    const userData = await sql.query(
-      "SELECT user_id, role FROM users WHERE user_name = $1",
-      [username],
-    );
-
-    if (!["author", "admin"].includes(userData[0].role)) {
-      throw new Error("Unauthorized Operation.");
-    }
-
-    // Above flows are similar, but it needs to be checked:
-    // 1. The story we're inserting into is owned by the user
-    const story_id = formData.get("story_id") as string;
-
-    const storyOwner = await sql.query(
-      "SELECT user_id FROM stories WHERE story_id = $1",
-      [story_id],
-    );
-    if (
-      storyOwner.length !== 1 ||
-      (storyOwner[0].user_id !== userData[0].user_id &&
-        userData[0].role !== "admin")
-    ) {
-      throw new Error("Unauthorized Operation.");
-    }
-
-    const title = formData.get("title") as string;
-    const slug = formData.get("slug") as string;
-    const description = formData.get("description") as string;
-    const corpus = formData.get("corpus") as string;
-
-    await sql.query(
-      `INSERT INTO chapters (story_id, title, slug, description, corpus)
-         VALUES ($1, $2, $3, $4, $5)`,
-      [story_id, title, slug, description, corpus],
-    );
-
-    console.log("Chapter created successfully.");
-  } catch (err: any) {
-    console.error("Error when creating chapter:", err);
-  }
-}
+export const dynamic = "force-dynamic";
 
 async function getStoryId(slug: string) {
   const response = await sql.query(
@@ -99,36 +40,7 @@ export default async function NewChapter(
           {/* Form */}
           <form action={createNewChapter} className="space-y-6">
             <input type="hidden" name="story_id" value={storyData.story_id} />
-            {/* Credentials Section */}
-            <div className="border border-accent1 rounded-md p-4 space-y-4">
-              <h2 className="font-semibold text-accent1 mb-2">Credentials</h2>
-
-              <div>
-                <label className="block mb-1 font-medium" htmlFor="username">
-                  Username
-                </label>
-                <input
-                  id="username"
-                  name="username"
-                  type="text"
-                  required
-                  className="w-full border rounded px-3 py-2"
-                />
-              </div>
-
-              <div>
-                <label className="block mb-1 font-medium" htmlFor="passcode">
-                  Passcode
-                </label>
-                <input
-                  id="passcode"
-                  name="passcode"
-                  type="password"
-                  required
-                  className="w-full border rounded px-3 py-2"
-                />
-              </div>
-            </div>
+            <FormCredentials />
 
             {/* Title */}
             <div>

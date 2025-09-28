@@ -1,61 +1,8 @@
-import { sql } from "@/db/context";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import bcrypt from "bcrypt";
-import { redirect } from "next/navigation";
+import FormCredentials from "@/components/FormCredentials";
 
-async function createNewStory(formData: FormData) {
-  "use server";
-
-  try {
-    const username = formData.get("username") as string;
-    const passCode = formData.get("passcode") as string;
-
-    const dbHash = await sql.query(
-      "SELECT pass_code FROM users WHERE user_name = $1",
-      [username],
-    );
-
-    if (dbHash.length !== 1) {
-      throw new Error("Invalid Credentials.");
-    }
-
-    const match = await bcrypt.compare(passCode, dbHash[0]?.pass_code);
-    if (!match) {
-      throw new Error("Invalid Credentials.");
-    }
-
-    const userData = await sql.query(
-      "SELECT user_id, role FROM users WHERE user_name = $1",
-      [username],
-    );
-
-    if (!["author", "admin"].includes(userData[0].role)) {
-      throw new Error("Unauthorized Operation.");
-    }
-
-    const title = formData.get("title") as string;
-    const slug = formData.get("slug") as string;
-    const description = formData.get("description") as string;
-    const summary = formData.get("summary") as string;
-    const featured = formData.get("featured") === "on";
-
-    await sql.query(
-      `INSERT INTO stories (user_id, title, slug, description, summary, featured)
-       VALUES ($1, $2, $3, $4, $5, $6)`,
-      [userData[0].user_id, title, slug, description, summary, featured],
-    );
-
-    console.log("Story created successfully.");
-    redirect(`/catalog/${slug}`);
-  } catch (err: any) {
-    // fyi, redirect throws an error that needs to be passed along so nextjs can reroute the user
-    if (err?.digest?.startsWith("NEXT_REDIRECT")) {
-      throw err;
-    }
-    console.error("Error when creating story:", err);
-  }
-}
+import { createNewStory } from "@/lib/actions/storyActions";
 
 export default async function NewStory() {
   return (
@@ -70,40 +17,9 @@ export default async function NewStory() {
             </h1>
           </section>
 
-          {/* Form */}
           <form action={createNewStory} className="space-y-6">
-            {/* Credentials Section */}
-            <div className="border border-accent1 rounded-md p-4 space-y-4">
-              <h2 className="font-semibold text-accent1 mb-2">Credentials</h2>
+            <FormCredentials />
 
-              <div>
-                <label className="block mb-1 font-medium" htmlFor="username">
-                  Username
-                </label>
-                <input
-                  id="username"
-                  name="username"
-                  type="text"
-                  required
-                  className="w-full border rounded px-3 py-2"
-                />
-              </div>
-
-              <div>
-                <label className="block mb-1 font-medium" htmlFor="passcode">
-                  Passcode
-                </label>
-                <input
-                  id="passcode"
-                  name="passcode"
-                  type="password"
-                  required
-                  className="w-full border rounded px-3 py-2"
-                />
-              </div>
-            </div>
-
-            {/* Title */}
             <div>
               <label className="block mb-1 font-medium" htmlFor="title">
                 Title
@@ -117,7 +33,6 @@ export default async function NewStory() {
               />
             </div>
 
-            {/* Slug */}
             <div>
               <label className="block mb-1 font-medium" htmlFor="slug">
                 Slug
@@ -131,7 +46,6 @@ export default async function NewStory() {
               />
             </div>
 
-            {/* Description (short tagline) */}
             <div>
               <label className="block mb-1 font-medium" htmlFor="description">
                 Description
@@ -145,7 +59,6 @@ export default async function NewStory() {
               />
             </div>
 
-            {/* Summary (longer overview) */}
             <div>
               <label className="block mb-1 font-medium" htmlFor="summary">
                 Summary
@@ -158,8 +71,6 @@ export default async function NewStory() {
                 placeholder="Introduce your story to readers."
               />
             </div>
-
-            {/* Featured */}
             <div className="flex items-center">
               <input
                 id="featured"
