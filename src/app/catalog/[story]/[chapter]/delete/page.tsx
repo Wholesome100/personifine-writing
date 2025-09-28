@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { notFound, redirect } from "next/navigation";
 import bcrypt from "bcrypt";
+import FormCredentials from "@/components/FormCredentials";
 
 // Inline server action for deleting a chapter
 async function deleteChapter(formData: FormData) {
@@ -107,31 +108,7 @@ export default async function DeleteChapter(
               Confirm Credentials
             </h2>
 
-            <div>
-              <label className="block mb-1 font-medium" htmlFor="username">
-                Username
-              </label>
-              <input
-                id="username"
-                name="username"
-                type="text"
-                required
-                className="w-full border rounded px-3 py-2"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-1 font-medium" htmlFor="passcode">
-                Passcode
-              </label>
-              <input
-                id="passcode"
-                name="passcode"
-                type="password"
-                required
-                className="w-full border rounded px-3 py-2"
-              />
-            </div>
+            <FormCredentials />
           </div>
 
           <button

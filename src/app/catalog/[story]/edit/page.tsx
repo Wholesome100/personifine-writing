@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { notFound, redirect } from "next/navigation";
 import bcrypt from "bcrypt";
+import FormCredentials from "@/components/FormCredentials";
 
 async function editStory(formData: FormData) {
   "use server";
@@ -107,36 +108,7 @@ export default async function EditStory(
         <form action={editStory} className="space-y-6">
           <input type="hidden" name="story_id" value={storyData.story_id} />
 
-          {/* Credentials Section */}
-          <div className="border border-accent1 rounded-md p-4 space-y-4">
-            <h2 className="font-semibold text-accent1 mb-2">Credentials</h2>
-
-            <div>
-              <label className="block mb-1 font-medium" htmlFor="username">
-                Username
-              </label>
-              <input
-                id="username"
-                name="username"
-                type="text"
-                required
-                className="w-full border rounded px-3 py-2"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-1 font-medium" htmlFor="passcode">
-                Passcode
-              </label>
-              <input
-                id="passcode"
-                name="passcode"
-                type="password"
-                required
-                className="w-full border rounded px-3 py-2"
-              />
-            </div>
-          </div>
+          <FormCredentials />
 
           {/* Story Fields */}
           <div>
