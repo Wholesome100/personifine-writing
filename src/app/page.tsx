@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 
 async function getFeatured() {
   const response =
-    await sql`SELECT title, description, slug FROM stories WHERE featured=TRUE`;
+    await sql`SELECT title, description, slug FROM stories WHERE featured=TRUE ORDER BY created_at DESC`;
   return response;
 }
 
