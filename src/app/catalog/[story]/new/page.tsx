@@ -2,8 +2,6 @@ import { sql } from "@/db/context";
 import { notFound } from "next/navigation";
 import { createNewChapter } from "@/lib/actions/chapterActions";
 
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import FormCredentials from "@/components/FormCredentials";
 
 export const dynamic = "force-dynamic";
@@ -26,89 +24,83 @@ export default async function NewChapter(
 
   const storyData = response[0];
   return (
-    <div className="flex flex-col min-h-screen bg-page-bg text-page-text">
-      <Header />
+    <main className="flex-grow flex items-center">
+      <div className="max-w-5xl mx-auto px-4 w-full">
+        <section className="mb-8">
+          <h1 className="font-serif text-4xl sm:text-5xl text-accent1 mb-4">
+            Create a New Chapter
+          </h1>
+        </section>
 
-      <main className="flex-grow flex items-center">
-        <div className="max-w-5xl mx-auto px-4 w-full">
-          <section className="mb-8">
-            <h1 className="font-serif text-4xl sm:text-5xl text-accent1 mb-4">
-              Create a New Chapter
-            </h1>
-          </section>
+        {/* Form */}
+        <form action={createNewChapter} className="space-y-6">
+          <input type="hidden" name="story_id" value={storyData.story_id} />
+          <FormCredentials />
 
-          {/* Form */}
-          <form action={createNewChapter} className="space-y-6">
-            <input type="hidden" name="story_id" value={storyData.story_id} />
-            <FormCredentials />
+          {/* Title */}
+          <div>
+            <label className="block mb-1 font-medium" htmlFor="title">
+              Title
+            </label>
+            <input
+              id="title"
+              name="title"
+              type="text"
+              required
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
 
-            {/* Title */}
-            <div>
-              <label className="block mb-1 font-medium" htmlFor="title">
-                Title
-              </label>
-              <input
-                id="title"
-                name="title"
-                type="text"
-                required
-                className="w-full border rounded px-3 py-2"
-              />
-            </div>
+          {/* Slug */}
+          <div>
+            <label className="block mb-1 font-medium" htmlFor="slug">
+              Slug
+            </label>
+            <input
+              id="slug"
+              name="slug"
+              type="text"
+              required
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
 
-            {/* Slug */}
-            <div>
-              <label className="block mb-1 font-medium" htmlFor="slug">
-                Slug
-              </label>
-              <input
-                id="slug"
-                name="slug"
-                type="text"
-                required
-                className="w-full border rounded px-3 py-2"
-              />
-            </div>
+          {/* Description (short tagline) */}
+          <div>
+            <label className="block mb-1 font-medium" htmlFor="description">
+              Description
+            </label>
+            <input
+              id="description"
+              name="description"
+              type="text"
+              className="w-full border rounded px-3 py-2"
+              placeholder="Your chapter in 1-2 sentences."
+            />
+          </div>
 
-            {/* Description (short tagline) */}
-            <div>
-              <label className="block mb-1 font-medium" htmlFor="description">
-                Description
-              </label>
-              <input
-                id="description"
-                name="description"
-                type="text"
-                className="w-full border rounded px-3 py-2"
-                placeholder="Your chapter in 1-2 sentences."
-              />
-            </div>
+          {/* Summary (longer overview) */}
+          <div>
+            <label className="block mb-1 font-medium" htmlFor="corpus">
+              Corpus
+            </label>
+            <textarea
+              id="corpus"
+              name="corpus"
+              rows={6}
+              className="w-full border rounded px-3 py-2 whitespace-pre-wrap resize-none"
+              placeholder="Write something!"
+            />
+          </div>
 
-            {/* Summary (longer overview) */}
-            <div>
-              <label className="block mb-1 font-medium" htmlFor="corpus">
-                Corpus
-              </label>
-              <textarea
-                id="corpus"
-                name="corpus"
-                rows={6}
-                className="w-full border rounded px-3 py-2 whitespace-pre-wrap resize-none"
-                placeholder="Write something!"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="bg-accent1 text-white px-4 py-2 rounded hover:bg-accent1-hover"
-            >
-              Submit
-            </button>
-          </form>
-        </div>
-      </main>
-
-      <Footer />
-    </div>
+          <button
+            type="submit"
+            className="bg-accent1 text-white px-4 py-2 rounded hover:bg-accent1-hover"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+    </main>
   );
 }

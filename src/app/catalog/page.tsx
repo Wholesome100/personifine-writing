@@ -1,6 +1,5 @@
 import { sql } from "@/db/context";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+
 import StoryCard from "@/components/StoryCard";
 
 // This is here to force the fetch to be dynamic for now. Revalidate functions will be added in the future
@@ -16,10 +15,7 @@ export default async function Catalog() {
   const catalog = await getCatalogStories();
 
   return (
-    <div className="flex flex-col min-h-screen bg-page-bg text-page-text">
-      <Header />
-
-      {/* Title & Intro */}
+    <>
       <section className="py-6 border-b border-page-text-muted max-w-5xl mx-auto px-4 w-full">
         <h1 className="font-serif text-4xl sm:text-5xl text-accent1">
           All Stories
@@ -28,8 +24,6 @@ export default async function Catalog() {
           Explore every story published on Personifine.
         </p>
       </section>
-
-      {/* Story Grid */}
       <section className="flex flex-col flex-grow py-8 w-full max-w-5xl mx-auto px-4">
         {catalog.length > 0
           ? (
@@ -46,8 +40,6 @@ export default async function Catalog() {
           )
           : <p className="text-page-text-muted">No stories found.</p>}
       </section>
-
-      <Footer />
-    </div>
+    </>
   );
 }

@@ -4,6 +4,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { Merriweather, Merriweather_Sans } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const merriweather = Merriweather({
   variable: "--font-merriweather",
@@ -52,7 +54,13 @@ export default function RootLayout({
       <body
         className={`${merriweather_sans.variable} ${merriweather.variable} antialiased`}
       >
-        {children}
+        {/* Almost all page layouts will follow a similar pattern, a singular flex container with a header and footer */}
+        <div className="flex flex-col min-h-screen bg-page-bg text-page-text">
+          <Header />
+          {children}
+
+          <Footer />
+        </div>
         <Analytics />
         <SpeedInsights />
       </body>
