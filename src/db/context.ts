@@ -1,4 +1,6 @@
-import "server-only";
+"use server"; // Ensure the neon script is executed only on the server
+
+import "server-only"; // Prevent the sql context from being imported into client code
 
 import { neon } from "@neondatabase/serverless";
 import process from "node:process";
