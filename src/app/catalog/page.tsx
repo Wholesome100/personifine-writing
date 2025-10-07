@@ -2,9 +2,6 @@ import { sql } from "@/db/context";
 
 import StoryCard from "@/components/StoryCard";
 
-// This is here to force the fetch to be dynamic for now. Revalidate functions will be added in the future
-export const dynamic = "force-dynamic";
-
 async function getCatalogStories() {
   const response =
     await sql`SELECT title, description, slug FROM stories ORDER BY created_at DESC`;
