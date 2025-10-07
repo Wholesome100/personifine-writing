@@ -1,6 +1,6 @@
 import { sql } from "@/db/context";
 import { notFound } from "next/navigation";
-import { deleteStory } from "@/lib/actions/storyActions";
+import { deleteStory } from "@/lib/actions/story/deleteStory";
 
 import FormCredentials from "@/components/FormCredentials";
 

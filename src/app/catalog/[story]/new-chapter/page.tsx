@@ -1,20 +1,43 @@
+import { sql } from "@/db/context";
+import { notFound } from "next/navigation";
+import { createNewChapter } from "@/lib/actions/chapter/newChapter";
+
 import FormCredentials from "@/components/FormCredentials";
 
-import { createNewStory } from "@/lib/actions/storyActions";
+export const dynamic = "force-dynamic";
 
-export default async function NewStory() {
+async function getStoryId(slug: string) {
+  const response = await sql.query(
+    "SELECT story_id FROM stories WHERE slug = $1",
+    [slug],
+  );
+  return response;
+}
+
+export default async function NewChapter(
+  { params }: { params: Promise<{ story: string }> },
+) {
+  const { story } = await params;
+
+  const response = await getStoryId(story);
+  if (!response.length) notFound();
+
+  const storyData = response[0];
   return (
     <main className="flex-grow flex items-center">
       <div className="max-w-5xl mx-auto px-4 w-full">
         <section className="mb-8">
           <h1 className="font-serif text-4xl sm:text-5xl text-accent1 mb-4">
-            Create a New Story
+            Create a New Chapter
           </h1>
         </section>
 
-        <form action={createNewStory} className="space-y-6">
+        {/* Form */}
+        <form action={createNewChapter} className="space-y-6">
+          <input type="hidden" name="story_id" value={storyData.story_id} />
           <FormCredentials />
 
+          {/* Title */}
           <div>
             <label className="block mb-1 font-medium" htmlFor="title">
               Title
@@ -28,6 +51,7 @@ export default async function NewStory() {
             />
           </div>
 
+          {/* Slug */}
           <div>
             <label className="block mb-1 font-medium" htmlFor="slug">
               Slug
@@ -41,6 +65,7 @@ export default async function NewStory() {
             />
           </div>
 
+          {/* Description (short tagline) */}
           <div>
             <label className="block mb-1 font-medium" htmlFor="description">
               Description
@@ -50,32 +75,22 @@ export default async function NewStory() {
               name="description"
               type="text"
               className="w-full border rounded px-3 py-2"
-              placeholder="Your story in 1-2 sentences."
+              placeholder="Your chapter in 1-2 sentences."
             />
           </div>
 
+          {/* Summary (longer overview) */}
           <div>
-            <label className="block mb-1 font-medium" htmlFor="summary">
-              Summary
+            <label className="block mb-1 font-medium" htmlFor="corpus">
+              Corpus
             </label>
             <textarea
-              id="summary"
-              name="summary"
+              id="corpus"
+              name="corpus"
               rows={6}
               className="w-full border rounded px-3 py-2 whitespace-pre-wrap resize-none"
-              placeholder="Introduce your story to readers."
+              placeholder="Write something!"
             />
-          </div>
-          <div className="flex items-center">
-            <input
-              id="featured"
-              name="featured"
-              type="checkbox"
-              className="mr-2"
-            />
-            <label htmlFor="featured" className="font-medium">
-              Featured
-            </label>
           </div>
 
           <button
