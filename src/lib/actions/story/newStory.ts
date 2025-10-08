@@ -32,7 +32,9 @@ export async function createNewStory(formData: FormData) {
   );
 
   console.log("Story created successfully.");
-
+  
+  // Revalidate the catalog and the front page when adding a new story
+  revalidatePath("/");
   revalidatePath("/catalog");
   redirect(`/catalog/${slug}`);
 }
