@@ -1,8 +1,20 @@
-import FormCredentials from "@/components/FormCredentials";
+"use client";
 
+import { useActionState } from "react";
 import { createNewStory } from "@/lib/actions/story/newStory";
 
-export default async function NewStory() {
+import FormCredentials from "@/components/FormCredentials";
+
+const initialState = {
+  message: "",
+};
+
+export default function NewStory() {
+  const [state, formAction, pending] = useActionState(
+    createNewStory,
+    initialState,
+  );
+
   return (
     <main className="flex-grow flex items-center">
       <div className="max-w-5xl mx-auto px-4 w-full">
@@ -12,7 +24,7 @@ export default async function NewStory() {
           </h1>
         </section>
 
-        <form action={createNewStory} className="space-y-6">
+        <form action={formAction} className="space-y-6">
           <FormCredentials />
 
           <div>
@@ -78,8 +90,10 @@ export default async function NewStory() {
             </label>
           </div>
 
+          {state?.message && <p aria-live="polite">{state.message}</p>}
           <button
             type="submit"
+            disabled={pending}
             className="bg-accent1 text-white px-4 py-2 rounded hover:bg-accent1-hover"
           >
             Submit

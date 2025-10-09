@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 // Server function to create a new story under /catalog
-export async function createNewStory(formData: FormData) {
+export async function createNewStory(_prevState: any, formData: FormData) {
   const username = formData.get("username") as string;
   const passCode = formData.get("passcode") as string;
 
@@ -15,8 +15,7 @@ export async function createNewStory(formData: FormData) {
 
   // Needs to return an error to the client side, workflows will need to be 'use client'
   if (!userData.ok) {
-    console.error(userData.error);
-    return;
+    return { message: userData.error };
   }
 
   const title = formData.get("title") as string;
@@ -32,7 +31,7 @@ export async function createNewStory(formData: FormData) {
   );
 
   console.log("Story created successfully.");
-  
+
   // Revalidate the catalog and the front page when adding a new story
   revalidatePath("/");
   revalidatePath("/catalog");
