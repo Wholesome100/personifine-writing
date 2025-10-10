@@ -4,21 +4,22 @@ import { sql } from "@/db/context";
 import bcrypt from "bcrypt";
 
 // Union type, one on success with ok == true, and one on fail with ok == false
-type checkAuthorResult = { ok: true; userId: string; role: string } | {
+export type CheckAuthorResult = { ok: true; userId: string; role: string } | {
   ok: false;
   error: string;
 };
 
+// This function authorizes the current user and checks if they are an author or admin
 export async function checkAuthor(
   username: string,
   passCode: string,
-): Promise<checkAuthorResult> {
+): Promise<CheckAuthorResult> {
   const dbHash = await sql.query(
     "SELECT pass_code FROM users WHERE user_name = $1",
     [username],
   );
 
-  // Valid because we only want 1 and only 1 user returned from the query
+  // We only want 1 and only 1 user returned from the query
   if (dbHash.length !== 1) {
     return { ok: false, error: "Invalid credentials." };
   }
@@ -35,10 +36,10 @@ export async function checkAuthor(
     [username],
   );
 
-  // If userData comes back empty, then the user didn't have the author or admin role
-  if (userData.length !== 1) {
-    return { ok: false, error: "Unauthorized Operation." };
+  if (userData.length === 1) {
+    return { ok: true, userId: userData[0].user_id, role: userData[0].role };
   }
 
-  return { ok: true, userId: userData[0].user_id, role: userData[0].role };
+  // If userData comes back empty, then the user didn't have the author or admin role
+  return { ok: false, error: "Unauthorized Operation." };
 }
