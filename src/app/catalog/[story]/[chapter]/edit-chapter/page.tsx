@@ -2,7 +2,7 @@ import { sql } from "@/db/context";
 import { notFound } from "next/navigation";
 import { editChapter } from "@/lib/actions/chapter/editChapter";
 
-import FormCredentials from "@/components/FormCredentials";
+import FormCredentials from "@/components/forms/FormCredentials";
 
 export const dynamic = "force-dynamic";
 

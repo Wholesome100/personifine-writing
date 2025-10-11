@@ -1,8 +1,6 @@
-import EditStoryForm from "@/components/EditStoryForm";
+import EditStoryForm from "@/components/forms/story/EditStoryForm";
 import { sql } from "@/db/context";
 import { notFound } from "next/navigation";
-
-export const dynamic = "force-dynamic";
 
 // Helper to fetch story by slug
 async function getStory(slug: string) {

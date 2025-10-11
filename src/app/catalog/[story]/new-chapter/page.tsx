@@ -2,7 +2,7 @@ import { sql } from "@/db/context";
 import { notFound } from "next/navigation";
 import { createNewChapter } from "@/lib/actions/chapter/newChapter";
 
-import FormCredentials from "@/components/FormCredentials";
+import FormCredentials from "@/components/forms/FormCredentials";
 
 export const dynamic = "force-dynamic";
 
@@ -32,12 +32,10 @@ export default async function NewChapter(
           </h1>
         </section>
 
-        {/* Form */}
         <form action={createNewChapter} className="space-y-6">
           <input type="hidden" name="story_id" value={storyData.story_id} />
           <FormCredentials />
 
-          {/* Title */}
           <div>
             <label className="block mb-1 font-medium" htmlFor="title">
               Title
@@ -51,7 +49,6 @@ export default async function NewChapter(
             />
           </div>
 
-          {/* Slug */}
           <div>
             <label className="block mb-1 font-medium" htmlFor="slug">
               Slug
@@ -65,7 +62,6 @@ export default async function NewChapter(
             />
           </div>
 
-          {/* Description (short tagline) */}
           <div>
             <label className="block mb-1 font-medium" htmlFor="description">
               Description
@@ -79,7 +75,6 @@ export default async function NewChapter(
             />
           </div>
 
-          {/* Summary (longer overview) */}
           <div>
             <label className="block mb-1 font-medium" htmlFor="corpus">
               Corpus
