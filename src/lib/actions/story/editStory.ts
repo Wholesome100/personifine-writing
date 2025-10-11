@@ -8,7 +8,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 // Server function to edit existing stories
-export async function editStory(formData: FormData) {
+export async function editStory(_pending: any, formData: FormData) {
   const username = formData.get("username") as string;
   const passCode = formData.get("passcode") as string;
 
