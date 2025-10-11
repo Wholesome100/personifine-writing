@@ -2,6 +2,9 @@ import EditStoryForm from "@/components/forms/story/EditStoryForm";
 import { sql } from "@/db/context";
 import { notFound } from "next/navigation";
 
+// Workflow routes for edit will always fetch fresh data
+export const dynamic = "force-dynamic";
+
 // Helper to fetch story by slug
 async function getStory(slug: string) {
   const response = await sql.query(

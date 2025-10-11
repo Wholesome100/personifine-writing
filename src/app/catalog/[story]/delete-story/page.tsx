@@ -1,9 +1,8 @@
+import DeleteStoryForm from "@/components/forms/story/DeleteStoryForm";
 import { sql } from "@/db/context";
 import { notFound } from "next/navigation";
-import { deleteStory } from "@/lib/actions/story/deleteStory";
 
-import FormCredentials from "@/components/forms/FormCredentials";
-
+// Workflow routes for delete will always fetch fresh data
 export const dynamic = "force-dynamic";
 
 // Helper to fetch story by slug
@@ -37,24 +36,7 @@ export default async function DeleteStory(
         cannot be undone.
       </p>
 
-      <form action={deleteStory} className="space-y-6">
-        <input type="hidden" name="story_id" value={storyData.story_id} />
-
-        <div className="border border-accent3 rounded-md p-4 space-y-4">
-          <h2 className="font-semibold text-accent3 mb-2">
-            Confirm Credentials
-          </h2>
-
-          <FormCredentials />
-        </div>
-
-        <button
-          type="submit"
-          className="bg-accent3 text-page-bg px-4 py-2 rounded hover:bg-accent3-hover"
-        >
-          Yes, Delete Story
-        </button>
-      </form>
+      <DeleteStoryForm storyData={storyData} />
     </main>
   );
 }
