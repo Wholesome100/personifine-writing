@@ -1,8 +1,7 @@
 import { sql } from "@/db/context";
 import { notFound } from "next/navigation";
-import { deleteChapter } from "@/lib/actions/chapter/deleteChapter";
 
-import FormCredentials from "@/components/forms/FormCredentials";
+import DeleteChapterForm from "@/components/forms/chapter/DeleteChapterForm";
 
 export const dynamic = "force-dynamic";
 
@@ -40,29 +39,7 @@ export default async function DeleteChapter(
         action cannot be undone.
       </p>
 
-      <form action={deleteChapter} className="space-y-6">
-        <input type="hidden" name="story_id" value={chapterData.story_id} />
-        <input
-          type="hidden"
-          name="chapter_id"
-          value={chapterData.chapter_id}
-        />
-
-        <div className="border border-accent3 rounded-md p-4 space-y-4">
-          <h2 className="font-semibold text-accent3 mb-2">
-            Confirm Credentials
-          </h2>
-
-          <FormCredentials />
-        </div>
-
-        <button
-          type="submit"
-          className="bg-accent3 text-page-bg px-4 py-2 rounded hover:bg-accent3-hover"
-        >
-          Yes, Delete Chapter
-        </button>
-      </form>
+      <DeleteChapterForm chapterData={chapterData} />
     </main>
   );
 }
