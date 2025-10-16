@@ -2,71 +2,45 @@
 
 import { sql } from "@/db/context";
 
-import bcrypt from "bcrypt";
+import { checkAuthor } from "@/lib/auth/checkAuthor";
+import { checkOwner } from "@/lib/auth/checkOwner";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 // Server function to create a new chapter in an existing story
-export async function createNewChapter(formData: FormData) {
-  try {
-    const username = formData.get("username") as string;
-    const passCode = formData.get("passcode") as string;
+export async function createNewChapter(_pending: any, formData: FormData) {
+  const username = formData.get("username") as string;
+  const passCode = formData.get("passcode") as string;
 
-    const dbHash = await sql.query(
-      "SELECT pass_code FROM users WHERE user_name = $1",
-      [username],
-    );
+  const userData = await checkAuthor(username, passCode);
 
-    if (dbHash.length !== 1) {
-      throw new Error("Invalid Credentials.");
-    }
-
-    const match = await bcrypt.compare(passCode, dbHash[0]?.pass_code);
-    if (!match) {
-      throw new Error("Invalid Credentials.");
-    }
-
-    const userData = await sql.query(
-      "SELECT user_id, role FROM users WHERE user_name = $1",
-      [username],
-    );
-
-    if (!["author", "admin"].includes(userData[0].role)) {
-      throw new Error("Unauthorized Operation.");
-    }
-
-    // Above flows are similar, but it needs to be checked:
-    // 1. The story we're inserting into is owned by the user
-    const story_id = formData.get("story_id") as string;
-
-    const storyOwner = await sql.query(
-      "SELECT user_id, slug FROM stories WHERE story_id = $1",
-      [story_id],
-    );
-    if (
-      storyOwner.length !== 1 ||
-      (storyOwner[0].user_id !== userData[0].user_id &&
-        userData[0].role !== "admin")
-    ) {
-      throw new Error("Unauthorized Operation.");
-    }
-
-    const title = formData.get("title") as string;
-    const slug = formData.get("slug") as string;
-    const description = formData.get("description") as string;
-    const corpus = formData.get("corpus") as string;
-
-    await sql.query(
-      `INSERT INTO chapters (story_id, title, slug, description, corpus)
-         VALUES ($1, $2, $3, $4, $5)`,
-      [story_id, title, slug, description, corpus],
-    );
-
-    console.log("Chapter created successfully.");
-    redirect(`/catalog/${storyOwner[0].slug}/${slug}`);
-  } catch (err: any) {
-    if (err?.digest?.startsWith("NEXT_REDIRECT")) {
-      throw err;
-    }
-    console.error("Error when creating chapter:", err);
+  if (!userData.ok) {
+    return { message: userData.error };
   }
+
+  // Similar flows to stories, but it needs to be checked that the story we're inserting into is owned by the user
+  const storyId = formData.get("story_id") as string;
+
+  const isOwner = await checkOwner(storyId, userData);
+
+  if (!isOwner.ok) {
+    return { message: isOwner.error };
+  }
+
+  const title = formData.get("title") as string;
+  const slug = formData.get("slug") as string;
+  const description = formData.get("description") as string;
+  const corpus = formData.get("corpus") as string;
+
+  await sql.query(
+    `INSERT INTO chapters (story_id, title, slug, description, corpus)
+         VALUES ($1, $2, $3, $4, $5)`,
+    [storyId, title, slug, description, corpus],
+  );
+
+  console.log("Chapter created successfully.");
+
+  //Revalidate the story container for the chapter and redirect to the new chapter
+  revalidatePath(`/catalog/${isOwner.slug}`);
+  redirect(`/catalog/${isOwner.slug}/${slug}`);
 }

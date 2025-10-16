@@ -2,55 +2,40 @@
 
 import { sql } from "@/db/context";
 
-import bcrypt from "bcrypt";
+import { checkAuthor } from "@/lib/auth/checkAuthor";
+import { checkOwner } from "@/lib/auth/checkOwner";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 // Server function to edit existing chapters
-export async function editChapter(formData: FormData) {
-  try {
-    const username = formData.get("username") as string;
-    const passCode = formData.get("passcode") as string;
-    const storyId = formData.get("story_id") as string;
-    const chapterId = formData.get("chapter_id") as string;
+export async function editChapter(_pending: any, formData: FormData) {
+  const username = formData.get("username") as string;
+  const passCode = formData.get("passcode") as string;
+  const chapterId = formData.get("chapter_id") as string;
 
-    // Verify credentials
-    const dbHash = await sql.query(
-      "SELECT pass_code FROM users WHERE user_name = $1",
-      [username],
-    );
-    if (dbHash.length !== 1) throw new Error("Invalid Credentials.");
+  const userData = await checkAuthor(username, passCode);
 
-    const match = await bcrypt.compare(passCode, dbHash[0]?.pass_code);
-    if (!match) throw new Error("Invalid Credentials.");
+  if (!userData.ok) {
+    return { message: userData.error };
+  }
 
-    // Get user info
-    const userData = await sql.query(
-      "SELECT user_id, role FROM users WHERE user_name = $1",
-      [username],
-    );
+  const storyId = formData.get("story_id") as string;
+  // Ensure user is owner or admin
+  const isOwner = await checkOwner(storyId, userData);
 
-    // Ensure user is owner or admin
-    const storyOwner = await sql.query(
-      "SELECT user_id, slug FROM stories WHERE story_id = $1",
-      [storyId],
-    );
-    if (
-      storyOwner.length !== 1 ||
-      (storyOwner[0].user_id !== userData[0].user_id &&
-        userData[0].role !== "admin")
-    ) {
-      throw new Error("Unauthorized Operation.");
-    }
+  if (!isOwner.ok) {
+    return { message: isOwner.error };
+  }
 
-    // Collect updated fields
-    const title = formData.get("title") as string;
-    const slug = formData.get("slug") as string;
-    const description = formData.get("description") as string;
-    const corpus = formData.get("corpus") as string;
+  // Collect updated fields
+  const title = formData.get("title") as string;
+  const slug = formData.get("slug") as string;
+  const description = formData.get("description") as string;
+  const corpus = formData.get("corpus") as string;
 
-    // Update the chapter
-    await sql.query(
-      `UPDATE chapters
+  // Update the chapter
+  await sql.query(
+    `UPDATE chapters
        SET title = $1,
            slug = $2,
            description = $3,
@@ -58,15 +43,11 @@ export async function editChapter(formData: FormData) {
            updated_at = now()
        WHERE chapter_id = $5
          AND story_id = $6`,
-      [title, slug, description, corpus, chapterId, storyId],
-    );
+    [title, slug, description, corpus, chapterId, storyId],
+  );
 
-    console.log("Chapter updated successfully.");
-    redirect(`/catalog/${storyOwner[0].slug}/${slug}`);
-  } catch (err: any) {
-    if (err?.digest?.startsWith("NEXT_REDIRECT")) {
-      throw err;
-    }
-    console.error("Error when editing chapter:", err);
-  }
+  console.log("Chapter updated successfully.");
+  revalidatePath(`/catalog/${isOwner.slug}`);
+  revalidatePath(`/catalog/${isOwner.slug}/${slug}`);
+  redirect(`/catalog/${isOwner.slug}/${slug}`);
 }
