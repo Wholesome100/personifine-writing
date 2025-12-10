@@ -21,7 +21,7 @@ export default async function Catalog() {
           Explore every story published on Personifine.
         </p>
       </section>
-      <section className="flex flex-col flex-grow py-8 w-full max-w-5xl mx-auto px-4">
+      <section className="flex flex-col grow py-8 w-full max-w-5xl mx-auto px-4">
         {catalog.length > 0
           ? (
             <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-fr">

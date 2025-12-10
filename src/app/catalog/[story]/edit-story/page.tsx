@@ -25,7 +25,7 @@ export default async function EditStory(
   const storyData = response[0];
 
   return (
-    <main className="flex-grow w-full max-w-3xl mx-auto px-4 py-8">
+    <main className="grow w-full max-w-3xl mx-auto px-4 py-8">
       <h1 className="font-serif text-3xl sm:text-4xl text-accent1 mb-6">
         Edit Story
       </h1>

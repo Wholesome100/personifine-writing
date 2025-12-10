@@ -15,7 +15,7 @@ async function createApplicant(formData: FormData) {
 
 export default function Authorship() {
   return (
-    <main className="flex-grow flex items-center">
+    <main className="grow flex items-center">
       <div className="max-w-5xl mx-auto px-4 w-full">
         <section className="mb-8">
           <h1 className="font-serif text-4xl sm:text-5xl text-accent1 mb-4">

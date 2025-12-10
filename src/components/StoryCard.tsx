@@ -17,7 +17,7 @@ export default function StoryCard(
       <h3 className="font-serif text-lg sm:text-xl text-accent1 mb-2">
         {title}
       </h3>
-      <p className="text-page-text-muted flex-grow text-sm sm:text-base">
+      <p className="text-page-text-muted grow text-sm sm:text-base">
         {description}
       </p>
       <span className="mt-4 text-accent2 text-sm font-medium">

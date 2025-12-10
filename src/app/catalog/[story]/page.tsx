@@ -35,7 +35,7 @@ export default async function Story(
 
   const chapters = await getChapterDetails(storyData.story_id);
   return (
-    <main className="flex-grow max-w-5xl mx-auto px-4 py-8">
+    <main className="grow max-w-5xl mx-auto px-4 py-8">
       {/* Story Header */}
       <header className="mb-8">
         <h1 className="font-serif text-4xl sm:text-5xl text-accent1 mb-2">

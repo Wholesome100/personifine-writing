@@ -16,9 +16,9 @@ export default async function Home() {
   const stories = await getFeatured();
 
   return (
-    <main className="flex flex-col flex-grow">
+    <main className="flex flex-col grow">
       {/* Shared container for hero + stories */}
-      <div className="flex-grow max-w-5xl mx-auto px-4 w-full flex flex-col">
+      <div className="grow max-w-5xl mx-auto px-4 w-full flex flex-col">
         {/* Hero / Logo */}
         <section className="py-6">
           <h1 className="font-serif text-4xl sm:text-5xl text-accent1">
@@ -30,13 +30,13 @@ export default async function Home() {
         </section>
 
         {/* Featured Stories */}
-        <section className="flex flex-col flex-grow py-8 w-full">
+        <section className="flex flex-col grow py-8 w-full">
           <h2 className="font-serif text-2xl text-accent2 mb-6">
             Featured Stories
           </h2>
           {stories.length > 0
             ? (
-              <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-fr flex-grow">
+              <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-fr grow">
                 {stories.map((story) => (
                   <StoryCard
                     key={story.slug}
